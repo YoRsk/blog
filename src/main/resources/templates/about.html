@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head  th:replace="_fragments :: head(~{::title},汪凯飞的个人博客，学习，分享，交流)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于我</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+
+  <!--导航-->
+  <nav th:replace="_fragments :: menu(4)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+  </nav>
+
+  <!--中间内容-->
+  <div  class="m-container m-padded-tb-big animated fadeIn">
+    <div class="ui container">
+
+      <div class="ui stackable grid">
+        <div class="eleven wide column">
+          <div class="ui segment">
+            <img src="https://unsplash.it/800/600?image=1005" alt="" class="ui rounded image">
+          </div>
+        </div>
+        <div class="five wide column">
+          <div class="ui top attached segment">
+            <div class="ui header" th:if="${owner.nickname}!=null" th:text="${owner.nickname}">关于我</div>
+            <div class="ui header" th:unless="${owner.nickname}!=null">该用户暂无昵称</div>
+          </div>
+          <div class="ui attached segment">
+            <p class="m-text" th:if="${owner.introduce}!=null" th:text="${owner.introduce}">南昌大学-彭刘羿。</p>
+            <p class="m-text" th:unless="${owner.introduce}!=null">该用户暂无自我介绍</p>
+          </div>
+          <div class="ui attached segment">
+            <div class="ui orange basic left pointing label">邮箱：</div>
+            <p class="m-text" th:if="${owner.email}!=null" th:text="${owner.email}">2259329685@qq.com</p>
+            <p class="m-text" th:unless="${owner.email}!=null">该用户没有填写邮箱</p>
+          </div>
+          <div class="ui attached segment">
+            <div class="ui teal basic left pointing label m-margin-tb-tiny">工作性质：</div>
+            <p class="m-text" th:if="${owner.workKind}!=null" th:text="${owner.workKind}">编程与代码维护</p>
+            <p class="m-text" th:if="${owner.workKind}==null">该用户没有填写工作性质</p>
+          </div>
+          <div class="ui attached segment">
+            <div class="ui teal basic left pointing label m-margin-tb-tiny">工作地点：</div>
+            <p class="m-text" th:if="${owner.workPlace}!=null" th:text="${owner.workPlace}">江西省南昌大学</p>
+            <p class="m-text" th:unless="${owner.workPlace}!=null">该用户没有填写工作地点</p>
+          </div>
+          <div class="ui bottom attached segment" th:if="${session.user!=null} and (${owner.id}==${session.user.id}) ">
+            <a href="#" th:href="@{/about/{id}/input(id=${session.user.id})}" class="ui teal button">编辑个人资料</a>
+          </div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+
+  <script>
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+
+  </script>
+</body>
+</html>

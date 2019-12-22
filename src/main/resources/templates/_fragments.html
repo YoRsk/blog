@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title,description)">
+  <meta charset="UTF-8">
+  <meta name="keywords" content="博客">
+  <meta name="description" th:content="${description}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${title}">博客详情</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet"  th:href="@{/css/typo.css}">
+  <link rel="stylesheet"  th:href="@{/css/animate.css}">
+  <link rel="stylesheet"  th:href="@{/lib/prism/prism.css}">
+  <link rel="stylesheet"  th:href="@{/lib/tocbot/tocbot.css}">
+  <link rel="stylesheet"  th:href="@{/css/me.css}">
+  <link rel="stylesheet" href="../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}">
+</head>
+<body>
+
+
+<!--导航-->
+<nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+  <div class="ui container">
+    <div class="ui inverted secondary stackable menu">
+      <h2 class="ui teal header item">Blog</h2>
+        <a href="#" th:href="@{/}" class="m-item item m-mobile-hide " th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>首页</a>
+        <a href="#" th:href="@{/types/-1}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini idea icon"></i>分类</a>
+        <a href="#" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="mini tags icon"></i>标签</a>
+        <a href="#" th:if="${session.user}!=null" th:href="@{/about/{id}(id=${session.user.id})}" class="m-item item m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="mini info icon"></i>个人资料</a>
+        <a href="#" th:if="${session.user}!=null" th:href="@{/user/blogs/input}" class="m-item item m-mobile-hide" th:classappend="${n==5} ? 'active'"><i class="mini info icon"></i>发表帖子</a></span>
+        <a href="#" th:if="${session.user}!=null" th:href="@{/user/blogs/input}" class="m-item item m-mobile-hide" th:classappend="${n==6} ? 'active'"><i class="mini info icon"></i>编辑帖子</a></span>
+
+        <div class="right m-item item m-mobile-hide">
+        <form name="search" action="#" th:action="@{/search}" method="post" target="_blank">
+          <!--搜索框-->
+          <div class="ui icon inverted transparent input m-margin-tb-tiny">
+            <input type="text" name="query" placeholder="Search...." th:value="${query}">
+            <i onclick="document.forms['sear  ch'].submit()" class="search link icon"></i>
+          </div>
+        </form>
+      </div>
+
+      <div class="right m-item m-mobile-hide menu" th:if="${session.user}!=null">
+        <div class="ui dropdown  item">
+          <div class="text">
+            <img class="ui avatar image" src="https://unsplash.it/100/100?image=1005" th:src="@{${session.user.avatar}}">
+            <span th:text="${session.user.nickname}">nickname</span>
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <a href="#" th:href="@{/user/logout}" class="item">注销</a>
+          </div>
+        </div>
+      </div>
+
+      <span th:if="${session.user}==null" >
+        <a href="#" th:href="@{/user}" class="m-item item m-mobile-hide" th:classappend="${n==5} ? 'active'"><i class="mini info icon"></i>登录</a>
+        <a href="#" th:href="@{/user/register}" class="m-item item m-mobile-hide" th:classappend="${n==6} ? 'active'"><i class="mini clone icon"></i>注册</a>
+      </span>
+
+    </div>
+  </div>
+  <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+    <i class="sidebar icon"></i>
+  </a>
+</nav>
+
+<!--底部footer-->
+<footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
+  <div class="ui center aligned container">
+    <div class="ui inverted section divider"></div>
+    <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2019 - <span th:text="${#dates.year(#dates.createNow())}"></span></p>
+  </div>
+</footer>
+
+<th:block th:fragment="script">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+  <script  th:src="@{/lib/prism/prism.js}"></script>
+  <script  th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+  <script  th:src="@{/lib/qrcode/qrcode.min.js}"></script>
+  <script s th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+  <script>
+    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+  </script>
+  <script src="../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+spring:
+  mail:
+    host: #smtp服务器
+    username: #用户名
+    password: #密码
+    default-encoding: UTF-8
+    port: #端口
+#  thymeleaf:
+#    mode: HTML
+  profiles:
+    active: pro
+  messages:
+    basename: i18n/messages
+server:
+  #端口号
+  port: 8889
+
+
+
