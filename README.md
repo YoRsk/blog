@@ -12,8 +12,8 @@
 6.	普通用户个人信息页面
   ![images](https://github.com/YoRsk/Home/blob/main/items/blogs/readme/images/6.png)
 7.	发表帖子页面
-  ![images](https://github.com/YoRsk/Home/blob/main/items/blogs/readme/images/7.png)
   ![images](https://github.com/YoRsk/Home/blob/main/items/blogs/readme/images/7-1.png)
+  ![images](https://github.com/YoRsk/Home/blob/main/items/blogs/readme/images/7-2.png)
 8.	用户自己已发表帖子页面
   ![images](https://github.com/YoRsk/Home/blob/main/items/blogs/readme/images/8.png)
 9.用户及游客评论区展示
