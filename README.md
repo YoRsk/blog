@@ -18,7 +18,7 @@ The Blog Application is a dynamic web platform designed for creating and sharing
 - Maven
 - MySQL
 
-### Installation
+### Installation (not certified)
 1. Clone the repository:
   ```sh
    git clone https://github.com/YoRsk/blog.git
