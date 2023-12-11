@@ -17,9 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
-/**
- * Created by limi on 2017/10/16.
- */
+
 
 @Controller
 @RequestMapping("/admin")

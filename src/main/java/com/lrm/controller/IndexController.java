@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * Created by limi on 2017/10/13.
- */
+
 @Controller
 public class IndexController {
 

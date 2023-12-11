@@ -16,7 +16,7 @@ public class Blog {
     private String title;
 
     @Basic(fetch = FetchType.LAZY)
-    @Lob
+//    @Lob
     private String content;
     private String firstPicture;
     private String flag;

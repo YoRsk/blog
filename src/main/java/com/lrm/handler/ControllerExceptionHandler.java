@@ -10,9 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by limi on 2017/10/13.
- */
+
 @ControllerAdvice
 public class ControllerExceptionHandler {
 

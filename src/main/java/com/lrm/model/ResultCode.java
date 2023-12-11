@@ -1,8 +1,6 @@
 package com.lrm.model;
 
-/**
- * @A
- **/
+
 public enum ResultCode {
 
     // 成功
