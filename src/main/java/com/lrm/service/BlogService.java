@@ -8,9 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by limi on 2017/10/20.
- */
+
 public interface BlogService {
 
     Blog getBlog(Long id);
