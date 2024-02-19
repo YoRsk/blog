@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> listCommentByBlogId(Long blogId) {
-        Sort sort = new Sort("createTime");
+        Sort sort = Sort.by("createTime");
         List<Comment> comments = commentRepository.findByBlogIdAndParentCommentNull(blogId, sort);
         return eachComment(comments);
     }
@@ -93,11 +93,11 @@ public class CommentServiceImpl implements CommentService {
      */
     private void recursively(Comment comment) {
         tempReplys.add(comment);//顶节点添加到临时存放集合
-        if (comment.getReplyComments().size() > 0) {
+        if (!comment.getReplyComments().isEmpty()) {
             List<Comment> replys = comment.getReplyComments();
             for (Comment reply : replys) {
                 tempReplys.add(reply);
-                if (reply.getReplyComments().size() > 0) {
+                if (!reply.getReplyComments().isEmpty()) {
                     recursively(reply);
                 }
             }

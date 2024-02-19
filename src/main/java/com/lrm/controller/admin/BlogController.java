@@ -6,6 +6,7 @@ import com.lrm.po.User;
 import com.lrm.service.BlogService;
 import com.lrm.service.TagService;
 import com.lrm.service.TypeService;
+import com.lrm.service.UserService;
 import com.lrm.vo.BlogQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,8 @@ public class BlogController {
     private TypeService typeService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/blogs")
     public String blogs(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
@@ -80,7 +83,8 @@ public class BlogController {
 
     @PostMapping("/blogs")
     public String post(Blog blog, RedirectAttributes attributes, HttpSession session) {
-        blog.setUser((User) session.getAttribute("user"));
+        User currentUser = userService.getUser(((User)session.getAttribute("user")).getId());
+        blog.setUser(currentUser);
         blog.setType(typeService.getType(blog.getType().getId()));
         blog.setTags(tagService.listTag(blog.getTagIds()));
         Blog b;

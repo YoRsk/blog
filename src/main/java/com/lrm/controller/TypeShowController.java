@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -24,7 +25,7 @@ public class TypeShowController {
 
     @Autowired
     private BlogService blogService;
-
+    @Transactional
     @GetMapping("/types/{id}")
     public String types(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                         @PathVariable Long id, Model model) {

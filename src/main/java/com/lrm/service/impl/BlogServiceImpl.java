@@ -33,7 +33,34 @@ public class BlogServiceImpl implements BlogService {
     public Blog getBlog(Long id) {
         return blogRepository.findById(id).get();
     }
-
+//    @Transactional
+//    @Override
+//    public Blog getAndConvert(Long id) {
+//        Blog blog = blogRepository.findById(id)
+//                .orElseThrow(() -> new NotFoundException("该博客不存在"));
+//        // 直接在查询到的实体上操作，避免创建新实例
+//        // 注意：这会改变数据库对象的状态，但只要你不调用save方法，这些改变不会持久化到数据库
+//        String content = blog.getContent();
+//        blog.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+//
+//        // 由于这是一个事务性操作，这里调用updateViews不会立即执行SQL更新操作，
+//        // 而是等到事务结束时。如果想要立即更新浏览量并反映到数据库中，
+//        // 可以在updateViews方法内部执行flush操作。
+//        blogRepository.updateViews(id);
+//        return blog;
+//    }
+//    @Transactional
+//    @Override
+//    public Blog getAndConvert(Long id) {
+//        Blog blog = blogRepository.findById(id)
+//                .orElseThrow(() -> new NotFoundException("该博客不存在"));
+//        Blog b = new Blog();
+//        BeanUtils.copyProperties(blog, b);//有可能blog==null，需复制过来
+//        String content = b.getContent();
+//        b.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+//        blogRepository.updateViews(id);
+//        return b;
+//    }
     @Transactional
     @Override
     public Blog getAndConvert(Long id) {
@@ -48,8 +75,6 @@ public class BlogServiceImpl implements BlogService {
         blogRepository.updateViews(id);
         return b;
     }
-
-
     @Override
     public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
         return blogRepository.findAll(new Specification<Blog>() {
@@ -57,7 +82,7 @@ public class BlogServiceImpl implements BlogService {
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<>();
                 if (!"".equals(blog.getTitle()) && blog.getTitle() != null) {
-                    predicates.add(cb.like(root.<String>get("title"), "%" + blog.getTitle() + "%"));
+                    predicates.add(cb.like(root.get("title"), "%" + blog.getTitle() + "%"));
                 }
                 if (blog.getTypeId() != null) {
                     predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
@@ -76,19 +101,12 @@ public class BlogServiceImpl implements BlogService {
         return blogRepository.findAll(pageable);
     }
 
-    /**
-     * @return Predicate:定义了查询条件
-     * @param Root<Users> root:根对象。封装了查询条件的对象
-     * @param CriteriaQuery<?> query:定义了一个基本的查询.一般不
-    使用
-     * @param CriteriaBuilder cb:创建一个查询条件
-     */
     @Override
     public Page<Blog> listBlog(Long tagId, Pageable pageable) {
         return blogRepository.findAll(new Specification<Blog>() {
             @Override
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                Join join = root.join("tags");//jpa中动态分类查询，通过tag的Id查询到页数来返回
+                Join<Object, Object> join = root.join("tags");//jpa中动态分类查询，通过tag的Id查询到页数来返回
                 return cb.equal(join.get("id"), tagId);
             }
         }, pageable);
@@ -98,13 +116,20 @@ public class BlogServiceImpl implements BlogService {
     public Page<Blog> listBlog(String query, Pageable pageable) {
         return blogRepository.findByQuery(query, pageable);
     }
-
     @Override
     public List<Blog> listRecommendBlogTop(Integer size) {
-        Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
-        Pageable pageable = new PageRequest(0, size, sort);
+        // 使用Sort.by静态方法创建Sort对象
+        Sort sort = Sort.by(Sort.Direction.DESC, "updateTime");
+        // 使用PageRequest.of静态方法创建Pageable对象
+        Pageable pageable = PageRequest.of(0, size, sort);
         return blogRepository.findTop(pageable);
     }
+//    @Override
+//    public List<Blog> listRecommendBlogTop(Integer size) {
+//        Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
+//        Pageable pageable = new PageRequest(0, size, sort);
+//        return blogRepository.findTop(pageable);
+//    }
 
     @Override
     public Map<String, List<Blog>> archiveBlog() {
@@ -138,14 +163,14 @@ public class BlogServiceImpl implements BlogService {
     @Transactional
     @Override
     public Blog updateBlog(Long id, Blog blog) {
-        Blog b = blogRepository.findById(id).get();
-        if (b == null) {
-            throw new NotFoundException("该博客不存在");
-        }
+        Blog b = blogRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("该博客不存在"));
+        // 使用自定义工具类来排除null值的属性
         BeanUtils.copyProperties(blog, b, MyBeanUtils.getNullPropertyNames(blog));
-        b.setUpdateTime(new Date());
-        return blogRepository.save(b);
+        b.setUpdateTime(new Date()); // 更新修改时间
+        return blogRepository.save(b); // 保存并返回更新后的实体
     }
+
 
     @Transactional
     @Override
