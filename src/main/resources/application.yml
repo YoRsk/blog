@@ -18,7 +18,7 @@ logging:
     root: info
     com.lrm: debug
   file:
-    name: log/blog-dev.log
+    name: /tmp/blog-dev.log
 
 comment:
   touristAvatar: /images/touristAvatar.png
