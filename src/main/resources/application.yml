@@ -63,7 +63,7 @@ management:
 resilience4j:
   circuitbreaker:
     instances:
-      companyBreaker:
+      blogBreaker:
         registerHealthIndicator: true
         sliding-window-size: 10
         minimumNumberOfCalls: 5
@@ -73,5 +73,3 @@ resilience4j:
         register-health-indicator: true
         automaticTransitionFromOpenToHalfOpenEnabled: true
         sliding-window-type: COUNT_BASED
-        eventConsumerBufferSize: 10
-
