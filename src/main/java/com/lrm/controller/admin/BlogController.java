@@ -1,7 +1,6 @@
 package com.lrm.controller.admin;
 
 import com.lrm.po.Blog;
-import com.lrm.po.Type;
 import com.lrm.po.User;
 import com.lrm.service.BlogService;
 import com.lrm.service.TagService;

@@ -3,13 +3,16 @@ services:
   app:
     image: pengliuyi/blogimage:latest
     ports:
-      - "8081:8080"
+      - "8081:8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/b?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_JPA_HIBERNATE_DDL-AUTO: update
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SERVER_PORT: 8081 # Not sure
+      TZ: Asia/Tokyo # Change all the time zone to your own
+
     depends_on:
       - db
     volumes:
@@ -20,10 +23,20 @@ services:
     environment:
       MYSQL_DATABASE: b
       MYSQL_ROOT_PASSWORD: root
+      TZ: Asia/Tokyo
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
       - "3307:3306"
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    environment:
+      TZ: Asia/Tokyo
+    networks:
+      - default
 
 volumes:
   mysql-data:

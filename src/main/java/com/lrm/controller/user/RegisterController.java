@@ -2,7 +2,6 @@ package com.lrm.controller.user;
 
 import com.lrm.po.User;
 import com.lrm.service.RegisterService;
-import com.lrm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

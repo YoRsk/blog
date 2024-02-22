@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,16 +50,16 @@ public class TagServiceImpl implements TagService {
         return tagRepository.findAll();
     }
 
-    @Override
+
 /*    Spring支持的request参数如下：
 
     page，第几页，从0开始，默认为第0页
     size，每一页的大小，默认为20
     sort，排序相关的信息，例如sort=firstname&sort=lastname,desc表示在按firstname正序排列基础上按lastname倒序排列*/
+    @Override
     public List<Tag> listTagTop(Integer size) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "blogs.size");
-        Pageable pageable = PageRequest.of(0, size, sort);
-        return tagRepository.findTop(pageable);
+        Pageable pageable = PageRequest.of(0, size);
+        return tagRepository.findTagsWithMostBlogs(pageable);
     }
 
 

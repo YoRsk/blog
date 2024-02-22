@@ -12,7 +12,8 @@ logging:
   level:
     root: warn
     com.lrm: info
-  file: log/blog-pro.log
+  file:
+    name: log/blog-pro.log
 mail:
   fromMail:
     addr: wangkaifei@myconjure.com

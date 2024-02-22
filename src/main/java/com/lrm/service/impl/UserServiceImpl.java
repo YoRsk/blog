@@ -3,7 +3,6 @@ package com.lrm.service.impl;
 import com.lrm.dao.UserRepository;
 import com.lrm.po.User;
 import com.lrm.service.UserService;
-import com.lrm.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

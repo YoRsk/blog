@@ -12,6 +12,9 @@ public interface TagRepository extends JpaRepository<Tag,Long> {
 
     Tag findByName(String name);
 
+    @Query("SELECT t FROM Tag t LEFT JOIN t.blogs b GROUP BY t ORDER BY COUNT(b) DESC")
+    List<Tag> findTagsWithMostBlogs(Pageable pageable);
+
     @Query("select t from Tag t")
     List<Tag> findTop(Pageable pageable);
 

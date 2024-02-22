@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head  th:replace="_fragments :: head(~{::title},'' )">
+<head  th:replace="~{_fragments :: head(~{::title},'' )}">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>关于我</title>
@@ -10,7 +10,7 @@
 <body>
 
   <!--导航-->
-  <nav th:replace="_fragments :: menu(4)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+  <nav th:replace="~{_fragments :: menu(4)}" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
   </nav>
 
   <!--中间内容-->

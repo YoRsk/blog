@@ -57,9 +57,8 @@ public class TypeServiceImpl implements TypeService {
         sort，排序相关的信息，例如sort=firstname&sort=lastname,desc表示在按firstname正序排列基础上按lastname倒序排列*/
     @Override
     public List<Type> listTypeTop(Integer size) {
-        Sort sort = Sort.by(Sort.Direction.DESC,"blogs.size");
-        Pageable pageable = PageRequest.of(0,size,sort);
-        return typeRepository.findTop(pageable);
+        Pageable pageable = PageRequest.of(0, size, Sort.unsorted()); // 由于排序逻辑已包含在JPQL中，这里不需要指定排序
+        return typeRepository.findTypesWithMostBlogs(pageable);
     }
 
 
