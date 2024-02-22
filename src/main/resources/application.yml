@@ -73,3 +73,11 @@ resilience4j:
         register-health-indicator: true
         automaticTransitionFromOpenToHalfOpenEnabled: true
         sliding-window-type: COUNT_BASED
+  #RateLimiter for defense against DDoS attacks
+  ratelimiter:
+    instances:
+        blogRateLimiter:
+            limit-for-period: 5
+            limit-refresh-period: 10s
+            timeout-duration: 10s
+            register-health-indicator: true
