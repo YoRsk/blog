@@ -1,9 +1,9 @@
 version: '3.8'
 services:
   app:
-    image: pengliuyi/blogimage:latest
+    image: pengliuyi/blog:latest
     ports:
-      - "8081:8081"
+      - "8081:8081"0
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/b?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
