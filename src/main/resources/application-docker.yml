@@ -24,8 +24,6 @@ spring:
 #Config server
   config:
     import: "optional:configserver:http://config-server:8080"
-  profiles:
-    active: dev
 #RabbitMQ
   rabbitmq:
     host: rabbitmq
