@@ -1,0 +1,98 @@
+blog-service:
+    url: http://blog
+comment-service:
+    url: http://comment
+
+server:
+  port: 8081
+spring:
+  application:
+    name: blog-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/db_blog?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+#Config server
+#  config:
+#    import: "optional:configserver:http://config-server:8080"
+#  profiles:
+#    active: dev
+#RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+#    virtual-host: /
+logging:
+  level:
+    debug: DEBUG
+#    root: info
+#    com.lrm: debug
+#  file:
+#    name: /tmp/blog-dev.log
+
+comment:
+  touristAvatar: /images/touristAvatar.png
+  userAvatar: /images/userAvatar.png
+
+#Eureka
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka
+
+#Zipkin
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+
+#Actuator
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include=*:
+  endpoint:
+    health:
+      show-details: always
+
+#Resilience4j
+resilience4j:
+  circuitbreaker:
+    instances:
+      blogBreaker:
+        registerHealthIndicator: true
+        sliding-window-size: 10
+        minimumNumberOfCalls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        register-health-indicator: true
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        sliding-window-type: COUNT_BASED
+  #RateLimiter for defense against DDoS attacks
+  ratelimiter:
+    instances:
+        blogRateLimiter:
+            limit-for-period: 5
+            limit-refresh-period: 10s
+            timeout-duration: 10s
+            register-health-indicator: true
