@@ -20,7 +20,7 @@ spring:
     open-in-view: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
 #Config server
   config:
     import: "optional:configserver:http://localhost:8080"

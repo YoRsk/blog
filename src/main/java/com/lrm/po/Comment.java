@@ -1,9 +1,9 @@
 package com.lrm.po;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,8 +25,9 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
-    @ManyToOne
-    private Blog blog;
+    private Long blogId;
+//    @ManyToOne
+//    private Blog blog;
 
     @OneToMany(mappedBy = "parentComment",fetch = FetchType.EAGER)
     private List<Comment> replyComments = new ArrayList<>();
@@ -47,9 +48,9 @@ public class Comment {
                 ", email='" + email + '\'' +
                 ", content='" + content + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", userId='" + userId + '\'' +
+                ", userId=" + userId +
                 ", createTime=" + createTime +
-                ", blog=" + blog +
+                ", blogId=" + blogId +
                 ", replyComments=" + replyComments +
                 ", parentComment=" + parentComment +
                 ", adminComment=" + adminComment +

@@ -20,12 +20,18 @@ spring:
     open-in-view: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
 #Config server
 #  config:
 #    import: "optional:configserver:http://config-server:8080"
 #  profiles:
 #    active: dev
+
+  # In fact, Spring Boot first loads the configuration in application.yml
+  # and then loads the configuration in application-k8s.yml.
+  # If there are any conflicts, the configuration in application-k8s.yml will override
+  # the same configuration entries in application.yml.
+
 #RabbitMQ
   rabbitmq:
     host: rabbitmq
@@ -95,4 +101,5 @@ resilience4j:
             limit-for-period: 5
             limit-refresh-period: 10s
             timeout-duration: 10s
-            register-health-indicator: true
+            register-health-indicator:
+
