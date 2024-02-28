@@ -25,7 +25,7 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8080"
   profiles:
-    active: dev
+    active: default
 #RabbitMQ
   rabbitmq:
     host: localhost
@@ -38,11 +38,11 @@ logging:
     root: info
     com.lrm: debug
   file:
-    name: /tmp/blog-dev.log
-
-comment:
-  touristAvatar: /images/touristAvatar.png
-  userAvatar: /images/userAvatar.png
+    name: /log/blog-dev.log
+# comment service already been created in microservices
+#comment:
+#  touristAvatar: /images/touristAvatar.png
+#  userAvatar: /images/userAvatar.png
 
 #Eureka
 eureka:

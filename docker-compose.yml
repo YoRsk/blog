@@ -13,7 +13,7 @@ services:
 #      SPRING_JPA_HIBERNATE_DDL-AUTO: update
 #      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
 #      SERVER_PORT: 8081 # Not sure
-      TZ: Asia/Tokyo # Change all the time zone to your own
+#      TZ: Asia/Tokyo # Change all the time zone to your own
 
     depends_on:
       - db
@@ -30,7 +30,7 @@ services:
     environment:
       MYSQL_DATABASE: b
       MYSQL_ROOT_PASSWORD: root
-      TZ: Asia/Tokyo
+#      TZ: Asia/Tokyo
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
@@ -90,6 +90,8 @@ services:
       - service-registry
     networks:
       - microservice-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
 
   rabbitmq:
     image: rabbitmq:3-management

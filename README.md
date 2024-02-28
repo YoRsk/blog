@@ -4,17 +4,21 @@
 The Blog Application is a dynamic web platform designed for creating and sharing content. Built with Spring Boot and leveraging the power of Spring MVC, it provides an intuitive and robust backend for managing blog posts, comments, and user interactions.
 
 ## Key Technologies
-- **Spring Boot 2.0.4**: Streamlines the bootstrapping and development of new Spring applications.
-- **Java 8**: Ensures compatibility with a wide range of environments and leverages modern Java features.
+- **Spring Boot**:
+- **Spring Cloud Eureka**
+- **Java 17**
+- **MySQL**
+- **RabbitMQ**
+- 
 - **Project Lombok**: Simplifies the code by auto-generating boilerplate code like getters, setters, and constructors.
 - **Spring Data JPA**: Facilitates object-relational mapping to simplify database interactions.
 - **Thymeleaf**: Serves as a server-side Java template engine for web views.
-- **MySQL**: Provides the database for storing application data.
+
 
 ## Getting Started
 
 ### Prerequisites
-- Java 8
+- Java 17
 - Maven
 - MySQL
 

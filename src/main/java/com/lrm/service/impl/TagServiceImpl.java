@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Long.parseLong;
+
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -72,8 +74,8 @@ public class TagServiceImpl implements TagService {
         List<Long> list = new ArrayList<>();
         if (!"".equals(ids) && ids != null) {
             String[] idarray = ids.split(",");
-            for (int i=0; i < idarray.length;i++) {
-                list.add(new Long(idarray[i]));
+            for (String s : idarray) {
+                list.add(parseLong(s));
             }
         }
         return list;
