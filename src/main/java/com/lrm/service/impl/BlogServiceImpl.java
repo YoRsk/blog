@@ -8,6 +8,7 @@ import com.lrm.service.BlogService;
 import com.lrm.util.MarkdownUtils;
 import com.lrm.util.MyBeanUtils;
 import com.lrm.vo.BlogQuery;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,8 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Blog getBlog(Long id) {
-        return blogRepository.findById(id).get();
+        return blogRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Blog not found with id: " + id));
     }
 //    @Transactional
 //    @Override
@@ -61,15 +63,15 @@ public class BlogServiceImpl implements BlogService {
 //        blogRepository.updateViews(id);
 //        return b;
 //    }
+
+    // get blog's detailed context and convert markdown to html
     @Transactional
     @Override
     public Blog getAndConvert(Long id) {
-        Blog blog = blogRepository.findById(id).get();
-        if (blog == null) {
-            throw new NotFoundException("该博客不存在");
-        }
+        Blog blog = blogRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("该博客不存在"));
         Blog b = new Blog();
-        BeanUtils.copyProperties(blog, b);//有可能blog==null，需复制过来
+        BeanUtils.copyProperties(blog, b);
         String content = b.getContent();
         b.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
         blogRepository.updateViews(id);
@@ -77,22 +79,19 @@ public class BlogServiceImpl implements BlogService {
     }
     @Override
     public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
-        return blogRepository.findAll(new Specification<Blog>() {
-            @Override
-            public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                List<Predicate> predicates = new ArrayList<>();
-                if (!"".equals(blog.getTitle()) && blog.getTitle() != null) {
-                    predicates.add(cb.like(root.get("title"), "%" + blog.getTitle() + "%"));
-                }
-                if (blog.getTypeId() != null) {
-                    predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
-                }
-                if (blog.isRecommend()) {
-                    predicates.add(cb.equal(root.<Boolean>get("recommend"), blog.isRecommend()));
-                }
-                cq.where(predicates.toArray(new Predicate[predicates.size()]));
-                return null;
+        return blogRepository.findAll((Specification<Blog>) (root, cq, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (!"".equals(blog.getTitle()) && blog.getTitle() != null) {
+                predicates.add(cb.like(root.get("title"), "%" + blog.getTitle() + "%"));
             }
+            if (blog.getTypeId() != null) {
+                predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
+            }
+            if (blog.isRecommend()) {
+                predicates.add(cb.equal(root.<Boolean>get("recommend"), blog.isRecommend()));
+            }
+            cq.where(predicates.toArray(new Predicate[predicates.size()]));
+            return null;
         }, pageable);
     }
 
