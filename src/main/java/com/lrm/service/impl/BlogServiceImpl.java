@@ -1,8 +1,8 @@
 package com.lrm.service.impl;
-
+import com.lrm.mapper.ObjectMapper;
 import com.lrm.NotFoundException;
 import com.lrm.dao.BlogRepository;
-import com.lrm.dto.BlogDTO;
+import com.lrm.dto.BlogListDTO;
 import com.lrm.dto.TypeDTO;
 import com.lrm.dto.UserDTO;
 import com.lrm.po.Blog;
@@ -98,9 +98,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Page<BlogDTO> listBlog(Pageable pageable) {
+    public Page<BlogListDTO> listBlog(Pageable pageable) {
         Page<Blog> blogs = blogRepository.findAll(pageable);
-        List<BlogDTO> blogDTOs = blogs.getContent().stream().map(this::convertToBlogDTO).collect(Collectors.toList());
+        List<BlogListDTO> blogDTOs = blogs.getContent().stream()
+                .map(ObjectMapper::toBlogListDTO)
+                .collect(Collectors.toList());
         return new PageImpl<>(blogDTOs, pageable, blogs.getTotalElements());
     }
 
@@ -177,26 +179,4 @@ public class BlogServiceImpl implements BlogService {
         blogRepository.deleteById(id);
     }
 
-    /* Private Function Block ↓ */
-    private BlogDTO convertToBlogDTO(Blog blog) {
-        BlogDTO dto = new BlogDTO();
-        dto.setId(blog.getId());
-        dto.setTitle(blog.getTitle());
-        dto.setDescription(blog.getDescription());
-        dto.setUpdateTime(blog.getUpdateTime());
-        dto.setViews(blog.getViews());
-        dto.setFirstPicture(blog.getFirstPicture());
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setAvatar(blog.getUser().getAvatar());
-        userDTO.setNickname(blog.getUser().getNickname());
-        dto.setUser(userDTO);
-
-        TypeDTO typeDTO = new TypeDTO();
-        typeDTO.setName(blog.getType().getName());
-        typeDTO.setId(blog.getType().getId());
-        dto.setType(typeDTO);
-
-        return dto;
-    }
 }

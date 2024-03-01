@@ -1,5 +1,6 @@
 package com.lrm.service;
 
+import com.lrm.dto.TagListDTO;
 import com.lrm.po.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ public interface TagService {
 
     List<Tag> listTag();
 
-    List<Tag> listTagTop(Integer size);
+    List<TagListDTO> listTagTop(Integer size);
 
     List<Tag> listTag(String ids);
 

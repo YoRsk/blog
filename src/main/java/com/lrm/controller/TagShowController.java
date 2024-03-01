@@ -1,5 +1,6 @@
 package com.lrm.controller;
 
+import com.lrm.dto.TagListDTO;
 import com.lrm.po.Tag;
 import com.lrm.service.BlogService;
 import com.lrm.service.TagService;
@@ -27,7 +28,7 @@ public class TagShowController {
     @GetMapping("/tags/{id}")
     public String tags(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                         @PathVariable Long id, Model model) {
-        List<Tag> tags = tagService.listTagTop(10000);
+        List<TagListDTO> tags = tagService.listTagTop(10000);
         if (id == -1) {
            id = tags.get(0).getId();
         }

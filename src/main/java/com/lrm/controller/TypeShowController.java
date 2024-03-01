@@ -1,5 +1,6 @@
 package com.lrm.controller;
 
+import com.lrm.dto.TypeListDTO;
 import com.lrm.po.Type;
 import com.lrm.service.BlogService;
 import com.lrm.service.TypeService;
@@ -29,7 +30,7 @@ public class TypeShowController {
     @GetMapping("/types/{id}")
     public String types(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                         @PathVariable Long id, Model model) {
-        List<Type> types = typeService.listTypeTop(10000);
+        List<TypeListDTO> types = typeService.listTypeTop(10000);
         if (id == -1) {
            id = types.get(0).getId();//得到第1个的id
         }
