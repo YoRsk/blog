@@ -2,6 +2,8 @@ package com.lrm.service.impl;
 
 import com.lrm.NotFoundException;
 import com.lrm.dao.TagRepository;
+import com.lrm.dto.TagListDTO;
+import com.lrm.mapper.ObjectMapper;
 import com.lrm.po.Tag;
 import com.lrm.service.TagService;
 import org.springframework.beans.BeanUtils;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Long.parseLong;
 
@@ -59,11 +62,13 @@ public class TagServiceImpl implements TagService {
     size，每一页的大小，默认为20
     sort，排序相关的信息，例如sort=firstname&sort=lastname,desc表示在按firstname正序排列基础上按lastname倒序排列*/
     @Override
-    public List<Tag> listTagTop(Integer size) {
+    public List<TagListDTO> listTagTop(Integer size) {
         Pageable pageable = PageRequest.of(0, size);
-        return tagRepository.findTagsWithMostBlogs(pageable);
+        List<Tag> tags = tagRepository.findTagsWithMostBlogs(pageable);
+        return tags.stream()
+                .map(ObjectMapper::toTagListDTO)
+                .collect(Collectors.toList());
     }
-
 
     @Override
     public List<Tag> listTag(String ids) { //1,2,3

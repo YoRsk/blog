@@ -1,6 +1,5 @@
 package com.lrm.service;
-
-import com.lrm.dto.BlogDTO;
+import com.lrm.dto.BlogListDTO;
 import com.lrm.po.Blog;
 import com.lrm.vo.BlogQuery;
 import org.springframework.data.domain.Page;
@@ -18,7 +17,7 @@ public interface BlogService {
 
     Page<Blog> listBlog(Pageable pageable,BlogQuery blog);
 
-    Page<BlogDTO> listBlog(Pageable pageable);
+    Page<BlogListDTO> listBlog(Pageable pageable);
 
     Page<Blog> listBlog(Long tagId,Pageable pageable);
 

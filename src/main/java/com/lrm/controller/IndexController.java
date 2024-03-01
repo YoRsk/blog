@@ -1,6 +1,8 @@
 package com.lrm.controller;
-
-import com.lrm.dto.BlogDTO;
+import com.lrm.dto.BlogListDTO;
+import com.lrm.dto.TagListDTO;
+import com.lrm.dto.TypeDTO;
+import com.lrm.dto.TypeListDTO;
 import com.lrm.po.Blog;
 import com.lrm.po.Tag;
 import com.lrm.po.Type;
@@ -34,27 +36,26 @@ public class IndexController {
     private TagService tagService;
 
     @CircuitBreaker(name = "blogBreaker")
-    @GetMapping("/api/blogs")
-    public ResponseEntity<Page<BlogDTO>> getBlogs(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("/blogsIndex")
+    public ResponseEntity<Page<BlogListDTO>> getBlogs(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(blogService.listBlog(pageable));
     }
-    @GetMapping("/api/types")
-    public ResponseEntity<List<Type>> getTypes() {
-        return ResponseEntity.ok(typeService.listTypeTop(6));
+    @GetMapping("/typesIndex")
+    public ResponseEntity<List<TypeListDTO>> getCategories() {
+        List<TypeListDTO> typeListDTO = typeService.listTypeTop(6);
+        return ResponseEntity.ok(typeListDTO);
     }
 
-    @GetMapping("/api/tags")
-    public ResponseEntity<List<Tag>> getTags() {
-        return ResponseEntity.ok(tagService.listTagTop(10));
+    @GetMapping("/tagsIndex")
+    public ResponseEntity<List<TagListDTO>> getTags() {
+        List<TagListDTO> tags = tagService.listTagTop(10);
+        return ResponseEntity.ok(tags);
     }
 
-    @GetMapping("/api/recommendBlogs")
+    @GetMapping("/recommendBlogsIndex")
     public ResponseEntity<List<Blog>> getRecommendBlogs() {
         return ResponseEntity.ok(blogService.listRecommendBlogTop(8));
     }
-
-
-
     @PostMapping("/search")
     public String search(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                          @RequestParam String query, Model model) {
