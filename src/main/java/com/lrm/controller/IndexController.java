@@ -1,22 +1,27 @@
 package com.lrm.controller;
 
+import com.lrm.dto.BlogDTO;
+import com.lrm.po.Blog;
+import com.lrm.po.Tag;
+import com.lrm.po.Type;
 import com.lrm.service.BlogService;
 import com.lrm.service.TagService;
 import com.lrm.service.TypeService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
-@Controller
+@RestController
+@RequestMapping("/")
 public class IndexController {
 
     @Autowired
@@ -29,15 +34,25 @@ public class IndexController {
     private TagService tagService;
 
     @CircuitBreaker(name = "blogBreaker")
-    @GetMapping("/")
-    public String index(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                        Model model) {
-        model.addAttribute("page",blogService.listBlog(pageable));
-        model.addAttribute("types", typeService.listTypeTop(6));
-        model.addAttribute("tags", tagService.listTagTop(10));
-        model.addAttribute("recommendBlogs", blogService.listRecommendBlogTop(8));
-        return "index";
+    @GetMapping("/api/blogs")
+    public ResponseEntity<Page<BlogDTO>> getBlogs(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(blogService.listBlog(pageable));
     }
+    @GetMapping("/api/types")
+    public ResponseEntity<List<Type>> getTypes() {
+        return ResponseEntity.ok(typeService.listTypeTop(6));
+    }
+
+    @GetMapping("/api/tags")
+    public ResponseEntity<List<Tag>> getTags() {
+        return ResponseEntity.ok(tagService.listTagTop(10));
+    }
+
+    @GetMapping("/api/recommendBlogs")
+    public ResponseEntity<List<Blog>> getRecommendBlogs() {
+        return ResponseEntity.ok(blogService.listRecommendBlogTop(8));
+    }
+
 
 
     @PostMapping("/search")

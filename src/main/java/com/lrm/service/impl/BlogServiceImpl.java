@@ -2,8 +2,12 @@ package com.lrm.service.impl;
 
 import com.lrm.NotFoundException;
 import com.lrm.dao.BlogRepository;
+import com.lrm.dto.BlogDTO;
+import com.lrm.dto.TypeDTO;
+import com.lrm.dto.UserDTO;
 import com.lrm.po.Blog;
 import com.lrm.po.Type;
+import com.lrm.po.Tag;
 import com.lrm.service.BlogService;
 import com.lrm.util.MarkdownUtils;
 import com.lrm.util.MyBeanUtils;
@@ -11,16 +15,14 @@ import com.lrm.vo.BlogQuery;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.criteria.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -96,9 +98,13 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Page<Blog> listBlog(Pageable pageable) {
-        return blogRepository.findAll(pageable);
+    public Page<BlogDTO> listBlog(Pageable pageable) {
+        Page<Blog> blogs = blogRepository.findAll(pageable);
+        List<BlogDTO> blogDTOs = blogs.getContent().stream().map(this::convertToBlogDTO).collect(Collectors.toList());
+        return new PageImpl<>(blogDTOs, pageable, blogs.getTotalElements());
     }
+
+
 
     @Override
     public Page<Blog> listBlog(Long tagId, Pageable pageable) {
@@ -123,12 +129,6 @@ public class BlogServiceImpl implements BlogService {
         Pageable pageable = PageRequest.of(0, size, sort);
         return blogRepository.findTop(pageable);
     }
-//    @Override
-//    public List<Blog> listRecommendBlogTop(Integer size) {
-//        Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
-//        Pageable pageable = new PageRequest(0, size, sort);
-//        return blogRepository.findTop(pageable);
-//    }
 
     @Override
     public Map<String, List<Blog>> archiveBlog() {
@@ -175,5 +175,28 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public void deleteBlog(Long id) {
         blogRepository.deleteById(id);
+    }
+
+    /* Private Function Block ↓ */
+    private BlogDTO convertToBlogDTO(Blog blog) {
+        BlogDTO dto = new BlogDTO();
+        dto.setId(blog.getId());
+        dto.setTitle(blog.getTitle());
+        dto.setDescription(blog.getDescription());
+        dto.setUpdateTime(blog.getUpdateTime());
+        dto.setViews(blog.getViews());
+        dto.setFirstPicture(blog.getFirstPicture());
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setAvatar(blog.getUser().getAvatar());
+        userDTO.setNickname(blog.getUser().getNickname());
+        dto.setUser(userDTO);
+
+        TypeDTO typeDTO = new TypeDTO();
+        typeDTO.setName(blog.getType().getName());
+        typeDTO.setId(blog.getType().getId());
+        dto.setType(typeDTO);
+
+        return dto;
     }
 }

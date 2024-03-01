@@ -1,5 +1,9 @@
 package com.lrm.po;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +14,7 @@ import java.util.*;
 @Getter
 @Entity
 @Table(name = "t_blog")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Blog {
 
     @Id
@@ -32,7 +37,7 @@ public class Blog {
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
-
+//
     @ManyToOne
     private Type type;
     @ManyToMany(cascade = {CascadeType.MERGE},fetch = FetchType.EAGER)

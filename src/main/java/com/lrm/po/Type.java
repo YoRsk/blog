@@ -2,6 +2,7 @@ package com.lrm.po;
 
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ public class Type {
     private String name;
 
     @OneToMany(mappedBy = "type",fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Blog> blogs = new ArrayList<>();
 
     public Type() {

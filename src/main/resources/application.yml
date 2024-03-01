@@ -38,7 +38,7 @@ logging:
     root: info
     com.lrm: debug
   file:
-    name: /log/blog-dev.log
+    name: ./logs/blog-dev.log
 # comment service already been created in microservices
 #comment:
 #  touristAvatar: /images/touristAvatar.png
