@@ -17,7 +17,6 @@ public class Blog {
     private Long id;
 
     private String title;
-
     @Basic(fetch = FetchType.LAZY)
 //    @Lob
     private String content;
@@ -44,8 +43,8 @@ public class Blog {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "blog",fetch = FetchType.EAGER)
-    private Set<Comment> comments = new HashSet<>();
+//    @OneToMany(mappedBy = "blog",fetch = FetchType.EAGER)
+//    private Set<Comment> comments = new HashSet<>();
 
     @Transient
     private String tagIds;
@@ -54,7 +53,6 @@ public class Blog {
 
     public Blog() {
     }
-
 
     public void init() {
         this.tagIds = tagsToIds(this.getTags());
@@ -99,7 +97,6 @@ public class Blog {
                 ", type=" + type +
                 ", tags=" + tags +
                 ", user=" + user +
-                ", comments=" + comments +
                 ", tagIds='" + tagIds + '\'' +
                 ", description='" + description + '\'' +
                 '}';
