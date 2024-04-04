@@ -12,8 +12,6 @@ The Blog Application is a dynamic web platform designed for creating and sharing
 - 
 - **Project Lombok**: Simplifies the code by auto-generating boilerplate code like getters, setters, and constructors.
 - **Spring Data JPA**: Facilitates object-relational mapping to simplify database interactions.
-- **Thymeleaf**: Serves as a server-side Java template engine for web views.
-
 
 ## Getting Started
 
